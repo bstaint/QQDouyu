@@ -1,7 +1,7 @@
 from PySide2 import QtWidgets
 from PySide2 import QtGui
 from PySide2 import QtCore
-from painter import IconRoundPixmap
+from pixmap import IconRoundPixmap
 
 class QQAvatarPanel(QtWidgets.QWidget):
 

@@ -5,7 +5,7 @@ from PySide2 import QtCore
 from PySide2 import QtGui
 from ui_qq import Ui_Form
 from douyu import DouyuMessageRunnable
-from painter import IconRoundPixmap
+from pixmap import IconRoundPixmap
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
 
