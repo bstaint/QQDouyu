@@ -40,13 +40,13 @@ class DouyuMessageSignal(QtCore.QObject):
     say = QtCore.Signal(str, str, str)
     gift = QtCore.Signal(str, str)
 
-class DouyuMessageRunnable(QtCore.QThread):
+class DouyuMessageServer(QtCore.QThread):
 
     host = 'openbarrage.douyutv.com'
     port = 8601
 
     def __init__(self, rid: int):
-        super(DouyuMessageRunnable, self).__init__()
+        super(DouyuMessageServer, self).__init__()
         self.sock = None
         self.rid = rid
         self.lasttick = 0

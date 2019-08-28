@@ -4,7 +4,7 @@ from PySide2 import QtWidgets
 from PySide2 import QtCore
 from PySide2 import QtGui
 from ui_qq import Ui_Form
-from douyu import DouyuMessageRunnable
+from douyu import DouyuMessageServer
 from pixmap import IconRoundPixmap
 
 os.chdir(os.path.dirname(os.path.realpath(__file__)))
@@ -169,31 +169,28 @@ class MyApp(QtWidgets.QWidget):
         print("panel clicked")
 
     def connect_server(self, rid : int):
-        self.task = DouyuMessageRunnable(rid)
+        self.task = DouyuMessageServer(rid)
         self.task.signals.say.connect(self.handle_listwidget)
         self.task.signals.gift.connect(self.handle_listwidget)
         self.task.start()
 
-    def add_chat_item(self, rid: int, desc: str, ico: str):
+    def _add_item(self, widget : QtWidgets.QListWidget, size : QtCore.QSize, item):
         raw_item = QtWidgets.QListWidgetItem()
-        raw_item.setSizeHint(QtCore.QSize(0, 55))
+        raw_item.setSizeHint(size)
+        widget.addItem(raw_item)
+        widget.setItemWidget(raw_item, item)
+
+    def add_chat_item(self, rid: int, desc: str, ico: str):
         item = QQListItem(self, rid, desc, QtGui.QIcon(ico))
-        self.ui.listWidget.addItem(raw_item)
-        self.ui.listWidget.setItemWidget(raw_item, item)
+        self._add_item(self.ui.listWidget, QtCore.QSize(0, 55), item)
 
     def add_gift_item(self, nickname: str, gfid: str):
-        raw_item = QtWidgets.QListWidgetItem()
-        raw_item.setSizeHint(QtCore.QSize(0, 30))
         item = QQGiftItem(self, nickname, gfid)
-        self.ui.listWidget_2.addItem(raw_item)
-        self.ui.listWidget_2.setItemWidget(raw_item, item)
+        self._add_item(self.ui.listWidget_2, QtCore.QSize(0, 30), item)
 
     def add_message_item(self, level: str, nickname: str, text: str):
-        raw_item = QtWidgets.QListWidgetItem()
-        raw_item.setSizeHint(QtCore.QSize(0, 60))
         item = QQChatItem(self, level, nickname, text)
-        self.ui.listWidget_2.addItem(raw_item)
-        self.ui.listWidget_2.setItemWidget(raw_item, item)
+        self._add_item(self.ui.listWidget_2, QtCore.QSize(0, 60), item)
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
