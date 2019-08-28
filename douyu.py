@@ -8,7 +8,7 @@ from typing import Tuple, Optional
 
 socket.setdefaulttimeout(5)
 
-def _pack(data):
+def _pack(data : str):
     # 包含头信息前8个字节和结尾1个字节
     size = 8 + len(data) + 1
     bytes_ = struct.pack('<iih??', size, size, 689, 0, 0) \
@@ -17,6 +17,7 @@ def _pack(data):
     return bytes_
 
 def parse_recv_msg(bytes_ : bytes) -> Optional[tuple]:
+    # 解析消息
     if len(bytes_) <= (4 + 8):
         return None
 
@@ -38,7 +39,6 @@ def parse_recv_msg(bytes_ : bytes) -> Optional[tuple]:
 class DouyuMessageSignal(QtCore.QObject):
     say = QtCore.Signal(str, str, str)
     gift = QtCore.Signal(str, str)
-    # finishd = QtCore.Signal()
 
 class DouyuMessageRunnable(QtCore.QThread):
 
@@ -49,7 +49,6 @@ class DouyuMessageRunnable(QtCore.QThread):
         super(DouyuMessageRunnable, self).__init__()
         self.sock = None
         self.rid = rid
-        # self.running = True
         self.lasttick = 0
         self.timeout = 0
         self.signals = DouyuMessageSignal()
@@ -58,9 +57,6 @@ class DouyuMessageRunnable(QtCore.QThread):
         if self.sock:
             print("close socket")
             self.sock.close()
-
-    # def finish(self):
-    #     self.running = False
 
     def connect(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
